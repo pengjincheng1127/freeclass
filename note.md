@@ -95,12 +95,165 @@
      console.log(Number([12,12]))//NaN
 ```
 
-### isNaN
-     检测数据类型是否是非有效数字如果是就是true反之为false
-     在检测数据类型的时候，如果发现数据类型不是number类型的，要把他先转换为数字，再判断
-```js
-     //用它检测有效数字返回false
-     console.log(isNaN(1)) //false
-     //用它检测的是非有效数字 返回true
-     console.log(isNaN(NaN))//true
+## isNaN
+ > 判断你要检测的数据值是否是一个非有效数字，如果是非有效数字就是true，反之就是false
+
+ - 检测是值是不是一个有效数字，如果是有效数字就是fasle，反之就是true
+
+ > 如果检测的值不是number类型，就把那个值先转为number类型，在判断
+
+ ```
+    isNaN(1) // false
+    isNaN(NaN) // =true
+
+    isNaN('13px') // true
+    isNaN(true) // false
+    isNaN(false) // false
+    isNaN(null) // false
+    isNaN(undefined) // true
+    isNaN({}) //true
+    isNaN([1,2]) // true
+
+    isNaN( Number(false) ) // false
+ ```
+
+ ## parseInt 转数字  parseFloat
+
+ > 他是从左往右依次查找，一旦遇到非有效数字，就立即停止，把数字返回
+
+ > 如果把数组转数字，那就看数组的第一项， 从左往右依次查找，一旦遇到非有效数字，就立即停止，把数字返回
+
+ > parseFloat 可以识别一位小数点
+
+ ```
+ parseInt(1.2); // 1
+ parseInt(3.1415926) // 3
+ parseInt('3.1415926') // 3
+ parseInt('3px') // 3
+ parseInt([3.12, '20']) // 3
+ parseFloat([3.12, '20']) // 3.12
+ parseInt('px12')  // NaN
+ parseInt(null) // NaN
+ parseInt(null) // NaN
+ parseInt(undefined) // NaN
+ parseInt(false) // NaN
+ parseInt(true) // NaN
+ 
+ parseFloat('3.13.12') // 3.13
+ parseFloat('3.12px') // 3.12
+ ```
+
+# string字符串类型
+ > 用单引号、双引号、反引号（``）【ES6的模板字符串】
+ - 把别的数据类型转换为string类型（val.toString();字符串拼接）
+ ## val.toString()
+    + 把对象转字符串 => '[object Objtct]'
+    + 把数组转换为字符串 : 把数组的中括号去掉，然后加上引号
+    + 数字、布尔转字符串是直接加引号
+    + null和undefined不能直接调用toString方法，他会报错（可以使用字符串拼接）
+
+    ```
+    ({}).toString() // '[object Object]'
+    [].toString() // ''
+    (23).toString() // '23'
+    true.toString() // 'true'
+    false.toString() // 'false'
+    ```
+## 四则运算（加法有可能出现字符串拼接）
+- 在四则运算中包括加减乘除，除了加法，其他的都是正常科学运算，
+
+- 加法就有可能出现字符串拼接，如果在加法中出现了字符串，那就不是数学运算，就是字符串拼接
+- 如果在运算中出现了不是数字类型的值，先把值转换为数字类型的，在运算
+- 在转换的时候遇到字符串，就直接拼接
+- 运算过程当中出现NaN，结果就是NaN
+- 在拼接过程中如果有数组或者普通对象，要给他转数字
+
 ```
+console.log('10' + 10) // '1010'
+console.log('10' - 10) // 0
+console.log('10px' - 10) // NaN
+console.log( [] + []) // => '' + []=> '' + ''
+console.log('12px'*0) // NaN
+console.log([] + false) // ''+ false=>'fasle'
+    console.log([31415926] + {name: 31415926})
+    // '31415926' +{name: 34151926} =>'31415926'+ '[object Object]'
+
+console.log(1 + null + false + '珠峰' + [] + null + undefined)
+    // 1+0 =>1+0=>'1珠峰'=> '1珠峰' =>'1珠峰null'=>'1珠峰nullundefined'
+
+console.log(1 + true + [] + false + [12] + null)
+// 1+ 1=>2+ ''=>'2false'=>'2false12'=>'2false12null'
+
+console.log(undefined+1+null+false+'珠峰'+[]+null)
+            // NaN+1=>NaN + 'NaN珠峰null'
+            // NaN+1=>NaN+0=>NaN+0=>NaN+'珠峰'=>'NaN珠峰'+ ''=>'NaN珠峰' + null=> 'NaN珠峰null'
+```
+
+## boolean 布尔
+> false/true
+
+- Boolean
+- !/!!
+- if判断
+
+### Boolean
+- 其他数据类型转布尔有且只有null、undefined、0、''、NaN是false，其余都是true，没有意外
+
+```
+    Boolean(null) // false
+    Boolean(undefined) // false
+    Boolean('') // false
+    Boolean(0) // false
+    Boolean(NaN) // false
+    Boolean(false) // false
+    Boolean('   ') // true
+```
+
+### !和!!
+ - 取反：先把值把转布尔之后在取反
+ ```
+ !'' // true
+ !null // true
+ ! undefined //true
+
+ ```
+ - !! 先把值把转布尔之后取反再取反（转布尔）
+
+ ```
+ !!1 // true
+ !!'' // false
+ !! NaN // false
+ ```
+
+### if条件判断
+> 如果判断的条件转布尔是true，就执行大括号里的代码，如果是false就不执行
+```
+// 大括号里的值会转布尔，如果括号里布尔是true就执行大括号里的东西（大括号里的值就是判断条件）
+if('1'){
+    console.log('xxx')
+}
+```
+
+### null和undefined
+    > null和undefined代表空
+#### null
+ - 是意料之中的（一般我们开始不知道值，我们先手动这只为null，后期再给予赋值操作）
+
+ ```
+ let num = null;(num一开始没有值，但是经过一系列js逻辑操作之后再给他赋值)
+
+  num  = 12
+
+// 例如我们的汽车，一开始没有汽油【相当于let num = null】，但是我以后肯定会加油的（这是我意料之中的事）,那以后加油时就是赋值【num = 12】
+ ```
+ #### undefined
+  - 意料之外（不是我能决定的，一般是默认机制）
+
+  ```
+    //  举个例子：那么孙悟空的父亲，我们现在大家公认的就是没有，他是石头缝里出来的，那他的父亲就是undefined；
+    猪无能我们知道它是有父亲的，但是我们现在还不能确定是哪一头猪，所以现在他的父亲就是null，但是以后经过我们的打听，我们知道了，它的父亲是隔壁村小花，那么这时我们再把它的父亲赋值为'xiaohua'
+  ```
+
+
+
+
